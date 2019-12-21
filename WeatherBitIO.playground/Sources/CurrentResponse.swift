@@ -5,7 +5,7 @@ import CoreLocation
 // tool to help generate these Codable structs: https://app.quicktype.io/
 //public class CurrentResponse {
 
-public struct CurrentResponse: Codable {
+public struct CurrentResponseOld: Codable {
   public let data: [CurrentConditions]
   public let count: Int
 }
