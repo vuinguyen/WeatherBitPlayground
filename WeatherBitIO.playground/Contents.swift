@@ -15,31 +15,48 @@ let city = "Raleigh,NC"
 let exampleURL = "https://api.weatherbit.io/v2.0/current?city=Raleigh,NC&key=API_KEY"
 
 let currentWeatherURL = "https://api.weatherbit.io/v2.0/current?" +
-                        "key=\(WeatherBitAPIKey)" +
-                        "&city=\(city)"
+  "key=\(WeatherBitAPIKey)" +
+"&city=\(city)"
 
 // create a URLSessionDataTask
 func startLoad() {
-    //let url = URL(string: "https://www.example.com/")!
+  //let url = URL(string: "https://www.example.com/")!
   let url = URL(string: currentWeatherURL)!
-    let task = URLSession.shared.dataTask(with: url) { data, response, error in
-        if let error = error {
-          print("yo, we have an error here!")
-          return
-        }
-        guard let httpResponse = response as? HTTPURLResponse,
-            (200...299).contains(httpResponse.statusCode) else {
-            print("yo, we have a server error here!")
-            return
-        }
-        if let data = data {
-            DispatchQueue.main.async {
-                //self.webView.loadHTMLString(string, baseURL: url)
-              print("data is: \(data)")
-            }
-        }
+  let task = URLSession.shared.dataTask(with: url) { data, response, error in
+    if let error = error {
+      print("yo, we have an error here!")
+      return
     }
-    task.resume()
+    guard let httpResponse = response as? HTTPURLResponse,
+      (200...299).contains(httpResponse.statusCode) else {
+        print("yo, we have a server error here!")
+        return
+    }
+
+    guard let data = data else {
+      print("couldn't get data! :(")
+      return
+    }
+    print("data is: \(data)")
+
+    let decoder = JSONDecoder()
+
+    do {
+      // let's parse some data here!
+      let response = try decoder.decode(CurrentResponse.self, from: data)
+      let forecast = response.data[0]
+
+      print("forecast is: \(forecast)")
+      DispatchQueue.main.async {
+        //self.webView.loadHTMLString(string, baseURL: url)
+
+      }
+    } catch {
+      print("error yo!")
+      return
+    }
+  }
+  task.resume()
 }
 
 // see what data we get back in memory
