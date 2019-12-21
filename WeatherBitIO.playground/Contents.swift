@@ -23,13 +23,13 @@ struct CurrentConditions: Codable {
   let solarRAD: Double
   let stateCode: String
   let cityName: String
-  let windSpd: Int
+  let windSpd: Double
   let lastObTime: String
   let windCdirFull: String
   let windCdir: String
   let slp: Double
   let vis: Double
-  let hAngle: Int
+  let hAngle: Double
   let sunset: String
   let dni: Double
   let dewpt: Double
@@ -40,7 +40,7 @@ struct CurrentConditions: Codable {
   let sunrise: String
   let ghi: Double
   let dhi: Double
-  let aqi: Int
+  let aqi: Double
   let lat: Double
   let weather: Weather
   let datetime: String
@@ -140,12 +140,13 @@ func startLoad() {
     }
     print("data is: \(data)")
 
-    let decoder = JSONDecoder()
+
 
     do {
       // let's parse some data here!
 
       // Note: this JSON decoding is not working
+      //let decoder = JSONDecoder()
       //let response = try decoder.decode(CurrentResponse.self, from: data)
       //let forecast = response.data[0]
       //print("forecast is: \(forecast)")
@@ -156,6 +157,7 @@ func startLoad() {
        return
        }
        //print(resultsDictionary)
+
 
       guard let count = resultsDictionary["count"] as? Int else {
         print("cannot get count")
